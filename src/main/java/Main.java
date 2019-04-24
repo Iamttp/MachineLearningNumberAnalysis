@@ -1,4 +1,7 @@
 import core.F;
+import core.F2;
+
+import java.util.Arrays;
 
 import static numberAnalysis.Integral.simpson38;
 import static numberAnalysis.Integral.TrapezoidF;
@@ -24,9 +27,17 @@ public class Main {
         System.out.println(res);
     }
 
+    static class myF2 implements F2 {
+        // x2 表示y 即为y'(x,y)函数
+        @Override
+        public double f(double x, double x2) {
+            return x2 - 2 * x / x2;
+        }
+    }
+
     public static void test4() {
-        double[] res = euler(new myF(), 0, 1, 10000, 1);
-        System.out.println(res[10000 - 1]);
+        double[] res = euler(new myF2(), 0, 1, 10, 1);
+        System.out.println(Arrays.toString(res));
     }
 
     public static void main(String[] args) {
