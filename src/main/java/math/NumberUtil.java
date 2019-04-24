@@ -1,4 +1,4 @@
-package core.math;
+package math;
 
 public class NumberUtil {
     /**

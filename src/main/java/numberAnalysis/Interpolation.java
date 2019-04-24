@@ -1,4 +1,4 @@
-package core.numberAnalysis;
+package numberAnalysis;
 
 public class Interpolation {
 
