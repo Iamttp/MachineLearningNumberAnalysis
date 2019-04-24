@@ -2,6 +2,9 @@ package numberAnalysis;
 
 import core.F;
 
+/**
+ * 函数求积
+ */
 public class Integral {
 
     /**

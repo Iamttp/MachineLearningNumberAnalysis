@@ -1,6 +1,8 @@
 import core.F;
 
+import static numberAnalysis.Integral.simpson38;
 import static numberAnalysis.Integral.TrapezoidF;
+import static numberAnalysis.OrdinaryDifferential.euler;
 
 public class Main {
 
@@ -8,16 +10,28 @@ public class Main {
     static class myF implements F {
         @Override
         public double f(double x) {
-            return Math.log(x);
+            return x * x;
         }
     }
 
     public static void test2() {
-        double res = TrapezoidF(new myF(), 1, 2, 4000);
+        double res = TrapezoidF(new myF(), 1, 2, 40);
         System.out.println(res);
+    }
+
+    public static void test3() {
+        double res = simpson38(new myF(), 1, 2);
+        System.out.println(res);
+    }
+
+    public static void test4() {
+        double[] res = euler(new myF(), 0, 1, 10000, 1);
+        System.out.println(res[10000 - 1]);
     }
 
     public static void main(String[] args) {
         test2();
+        test3();
+        test4();
     }
 }

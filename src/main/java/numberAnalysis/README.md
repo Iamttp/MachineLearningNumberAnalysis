@@ -35,3 +35,21 @@ public static void test2() {
     System.out.println(res);
 }
 ```
+
+常微分方程数值解法计算数学的一个分支。是解常微分方程各类定解问题的数值方法。现有的解析方法只能用于求解一些特殊类型的定解问题，实用上许多很有价值的常微分方程的解不能用初等函数来表示，常常需要求其数值解。所谓数值解，是指在求解区间内一系列离散点处给出真解的近似值。
+
+欧拉方法求微分方程
+
+```java
+static class myF implements F {
+    @Override
+    public double f(double x) {
+        return x * x;
+    }
+}
+
+public static void test4() {
+    double[] res = euler(new myF(), 0, 1, 10000, 1);
+    System.out.println(res[10000 - 1]);
+}
+```
