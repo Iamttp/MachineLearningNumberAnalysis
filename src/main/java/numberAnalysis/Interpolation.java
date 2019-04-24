@@ -31,7 +31,7 @@ public class Interpolation {
      * @param px 给出的变量
      * @return 返回变量运算后的结果
      */
-    public static double getValue(double[] x, double[] c, int n, int px) {
+    public static double getnewtddValue(double[] x, double[] c, int n, int px) {
         //(int x, int y) -> x + y;
         double sum = c[n - 1];
         for (int i = n - 2; i >= 0; i--) {

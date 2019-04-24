@@ -1,6 +1,6 @@
 import core.F;
 
-import static numberAnalysis.Integral.simpson38;
+import static numberAnalysis.Integral.TrapezoidF;
 
 public class Main {
 
@@ -8,12 +8,16 @@ public class Main {
     static class myF implements F {
         @Override
         public double f(double x) {
-            return x * x;
+            return Math.log(x);
         }
     }
 
-    public static void main(String[] args) {
-        double res = simpson38(new myF(), 0, 10);
+    public static void test2() {
+        double res = TrapezoidF(new myF(), 1, 2, 4000);
         System.out.println(res);
+    }
+
+    public static void main(String[] args) {
+        test2();
     }
 }

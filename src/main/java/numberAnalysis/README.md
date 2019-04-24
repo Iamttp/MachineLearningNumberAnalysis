@@ -12,10 +12,26 @@ public static void test1() {
     double[] y = new double[]{1, 2, 4};
     double[] c = newtddMethod(x, y, 3);
     System.out.println(Arrays.toString(c));
-    System.out.println(getValue(x, c, 3, 10));
+    System.out.println(getnewtddValue(x, c, 3, 10));
 }
 ```
 
 辛普森（Simpson）公式是牛顿-科特斯公式当n=2时的情形，也称为三点公式。利用区间二等分的三个点来进行积分插值。其科特斯系数分别为1/6，4/6，1/6。
 
 3/8公式使用4个点更加精确。
+复合梯形公式
+
+```java
+// 需要继承F接口实现静态内部类，完成函数的创建
+static class myF implements F {
+    @Override
+    public double f(double x) {
+        return Math.log(x);
+    }
+}
+
+public static void test2() {
+    double res = TrapezoidF(new myF(), 1, 2, 4000);
+    System.out.println(res);
+}
+```
