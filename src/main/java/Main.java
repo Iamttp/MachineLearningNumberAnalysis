@@ -6,6 +6,7 @@ import java.util.Arrays;
 import static numberAnalysis.Integral.simpson38;
 import static numberAnalysis.Integral.TrapezoidF;
 import static numberAnalysis.OrdinaryDifferential.euler;
+import static numberAnalysis.OrdinaryDifferential.rungeKutta;
 
 public class Main {
 
@@ -36,7 +37,7 @@ public class Main {
     }
 
     public static void test4() {
-        double[] res = euler(new myF2(), 0, 1, 10, 1);
+        double[] res = rungeKutta(new myF2(), 0, 1, 10, 1);
         System.out.println(Arrays.toString(res));
     }
 
