@@ -11,6 +11,8 @@ import core.F2;
 public class OrdinaryDifferential {
 
     /**
+     * 欧拉方法求微分方程，基本方法
+     *
      * @param differentialf 微分方程 x2 表示y 即为y'(x,y)函数
      * @param xleft         左端点
      * @param xright        右端点
@@ -31,6 +33,8 @@ public class OrdinaryDifferential {
     }
 
     /**
+     * 龙格-库塔方法求解微分方程，推荐使用，精度更高
+     *
      * @param differentialf 微分方程 x2 表示y 即为y'(x,y)函数
      * @param xleft         左端点
      * @param xright        右端点

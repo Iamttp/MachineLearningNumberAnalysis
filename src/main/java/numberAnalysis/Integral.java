@@ -8,6 +8,8 @@ import core.F;
 public class Integral {
 
     /**
+     * simpson38 较优的求积算法
+     *
      * @param f      函数
      * @param xleft  左端点
      * @param xright 右端点
@@ -24,6 +26,8 @@ public class Integral {
     }
 
     /**
+     * TrapezoidF 复合梯形解法，更加灵活
+     *
      * @param f      函数
      * @param xleft  左端点
      * @param xright 右端点

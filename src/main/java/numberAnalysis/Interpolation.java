@@ -6,6 +6,8 @@ package numberAnalysis;
 public class Interpolation {
 
     /**
+     * 牛顿插值，返回系数
+     *
      * @param x 给出的点的横坐标
      * @param y 给出的点的纵坐标
      * @param n 给出的点的数目
@@ -28,6 +30,8 @@ public class Interpolation {
     }
 
     /**
+     * 根据系数数组，求解函数
+     *
      * @param x  给出的点的横坐标
      * @param c  标识系数的数组
      * @param n  给出的点的数目
