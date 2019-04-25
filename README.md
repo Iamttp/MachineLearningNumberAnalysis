@@ -22,3 +22,71 @@
 ## 0.1 基本结构
 
 代码规范尽可能参考Hutool，尽可能减少对外部库的依赖。
+
+## 0.7 完成一些基本的数值分析方法
+
+```java
+    static class myF implements F {
+        @Override
+        public double f(double x) {
+            return x * x;
+        }
+    }
+
+    // 复合梯形积分测试
+    public static void test2() {
+        double res = TrapezoidF(new myF(), 1, 2, 4000);
+        System.out.println(res);
+    }
+
+    // 辛普森积分测试
+    public static void test3() {
+        double res = simpson38(new myF(), 1, 2);
+        System.out.println(res);
+    }
+
+    static class myF2 implements F2 {
+        // x2 表示y 即为y'(x,y)函数
+        @Override
+        public double f(double x, double x2) {
+            return x2 - 2 * x / x2;
+        }
+    }
+
+    // 龙格-库塔常微分测试
+    public static void test4() {
+        double[] res = rungeKutta(new myF2(), 0, 1, 10, 1);
+        System.out.println(res[10 - 1]);
+    }
+
+    static class myF3 implements F {
+        @Override
+        public double f(double x) {
+            return x * x - 2 * x;
+        }
+    }
+
+    // 二分法解方程测试
+    public static void test5() throws Exception {
+        double res = SolveEquations.bisect(new myF3(), 0.5, 5, 0.01);
+        System.out.println(res);
+    }
+
+    // 连续求导测试
+    public static void test6() {
+        F f1 = new DerivedFunction(new myF3());
+        F f2 = new DerivedFunction(f1);
+        System.out.println(f1.f(1));
+        System.out.println(f2.f(1));
+    }
+
+    // 牛顿法迭代求方程测试
+    public static void test7() {
+        double res = SolveEquations.newton(new myF3(), 0.5, 10);
+        System.out.println(res);
+    }
+```
+
+## 1.0 数值分析 -- 线性代数
+
+代码参考colt
