@@ -1,10 +1,13 @@
 import core.F;
 import core.F2;
+import matrix.DoubleMatrix2D;
 import matrix.impl.DenseDoubleMatrix2D;
+import matrix.linalg.LUDecomposition;
 import numberAnalysis.DerivedFunction;
 import numberAnalysis.SolveEquations;
 
 import java.util.Arrays;
+import java.util.List;
 
 import static numberAnalysis.Integral.simpson38;
 import static numberAnalysis.Integral.TrapezoidF;
@@ -73,6 +76,18 @@ public class Main {
         System.out.println(res);
     }
 
+    // 矩阵基本测试、LU分解
+    public static void test8() {
+        DenseDoubleMatrix2D d = new DenseDoubleMatrix2D(new double[][]{
+                {2, 4, -2},
+                {4, 9, -3},
+                {-2, -1, 7}
+        });
+        List<DoubleMatrix2D> ld = LUDecomposition.decomposition(d);
+        System.out.println(ld.get(0));
+        System.out.println(ld.get(1));
+    }
+
     public static void main(String[] args) throws Exception {
 //        test2();
 //        test3();
@@ -80,14 +95,6 @@ public class Main {
 //        test5();
 //        test6();
 //        test7();
-        DenseDoubleMatrix2D d = new DenseDoubleMatrix2D(new double[][]{
-                {1, 3, 5, 7, 9},
-                {1, 3, 5, 7, 9},
-                {1, 3, 5, 7, 9}
-        });
-        System.out.println(d.getQuick(1, 1));
-        System.out.println(d);
-        d.setQuick(2, 4, 11);
-        System.out.println(d);
+        test8();
     }
 }
