@@ -1,5 +1,6 @@
 import core.F;
 import core.F2;
+import matrix.impl.DenseDoubleMatrix2D;
 import numberAnalysis.DerivedFunction;
 import numberAnalysis.SolveEquations;
 
@@ -73,11 +74,20 @@ public class Main {
     }
 
     public static void main(String[] args) throws Exception {
-        test2();
-        test3();
-        test4();
-        test5();
-        test6();
-        test7();
+//        test2();
+//        test3();
+//        test4();
+//        test5();
+//        test6();
+//        test7();
+        DenseDoubleMatrix2D d = new DenseDoubleMatrix2D(new double[][]{
+                {1, 3, 5, 7, 9},
+                {1, 3, 5, 7, 9},
+                {1, 3, 5, 7, 9}
+        });
+        System.out.println(d.getQuick(1, 1));
+        System.out.println(d);
+        d.setQuick(2, 4, 11);
+        System.out.println(d);
     }
 }
