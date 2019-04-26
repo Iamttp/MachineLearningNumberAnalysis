@@ -30,7 +30,7 @@ public class Algebra extends PersistentObject {
     public static DoubleMatrix2D mult(DoubleMatrix2D a, DoubleMatrix2D b) {
         //当a的列数与矩阵b的行数不相等时，不能进行点乘，返回null
         if (a.columns() != b.rows())
-            return null;
+            throw new IllegalArgumentException("Incompatible dimensions: " + a.toStringShort() + " and " + b.toStringShort());
         //c矩阵的行数y，与列数x
         int y = a.rows();
         int x = b.columns();
@@ -43,5 +43,15 @@ public class Algebra extends PersistentObject {
                 c.setQuick(i, j, res);
             }
         return c;
+    }
+
+    public static DoubleMatrix2D transpose(DoubleMatrix2D a) {
+        DoubleMatrix2D MatrixC = new DenseDoubleMatrix2D(a.columns(), a.rows());
+        for (int i = 0; i < a.rows(); i++) {
+            for (int j = 0; j < a.columns(); j++) {
+                MatrixC.setQuick(j, i, a.getQuick(i, j));
+            }
+        }
+        return MatrixC;
     }
 }

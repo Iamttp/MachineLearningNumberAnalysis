@@ -83,12 +83,13 @@ public class Main {
         DenseDoubleMatrix2D d = new DenseDoubleMatrix2D(new double[][]{
                 {2, 4, -2},
                 {4, 9, -3},
-                {-2, -1, 7}
+                {-2, -1, 7},
+                {-2, 1, 7}
         });
         List<DoubleMatrix2D> ld = LUDecomposition.decomposition(d);
         System.out.println(ld.get(0));
         System.out.println(ld.get(1));
-        System.out.println(Algebra.mult(d, d));
+        System.out.println(Algebra.mult(d, Algebra.transpose(d)));
     }
 
     public static void main(String[] args) throws Exception {
@@ -99,7 +100,6 @@ public class Main {
 //        test6();
 //        test7();
         test8();
-        // TODO 矩阵乘法
         // TODO 迭代
     }
 }
