@@ -16,17 +16,17 @@ public class LUDecomposition {
      */
     public static List<DoubleMatrix2D> decomposition(DoubleMatrix2D a) throws IOException, ClassNotFoundException {
         DoubleMatrix2D U = (DoubleMatrix2D) a.deepClone();  //a是要分解的矩阵
-        DoubleMatrix2D L = new DenseDoubleMatrix2D(a.rows(), a.columns());
+        DoubleMatrix2D L = new DenseDoubleMatrix2D(U.rows(), U.columns());
 
-        for (int j = 0; j < a.columns(); j++) {
-            if (a.getQuick(0, 0) == 0) {
+        for (int j = 0; j < U.columns(); j++) {
+            if (U.getQuick(0, 0) == 0) {
                 throw new IllegalArgumentException("zero pivot encountered.");
             }
 
-            for (int i = j + 1; i < a.rows(); i++) {
-                double mult = a.getQuick(i, j) / a.getQuick(j, j);
-                for (int k = j; k < a.columns(); k++) {
-                    U.setQuick(i, k, a.getQuick(i, k) - a.getQuick(j, k) * mult);
+            for (int i = j + 1; i < U.rows(); i++) {
+                double mult = U.getQuick(i, j) / U.getQuick(j, j);
+                for (int k = j; k < U.columns(); k++) {
+                    U.setQuick(i, k, U.getQuick(i, k) - U.getQuick(j, k) * mult);
                     //得出上三角矩阵U,通过减去矩阵的第一行,第二行,第一行(第二行)得到上三角矩阵
                 }
                 L.setQuick(i, j, mult);  //得到下三角矩阵是得出上三角矩阵的乘积因子
