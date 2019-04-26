@@ -3,7 +3,7 @@ package matrix.impl;
 /**
  * 定义了基本的行数和列数，以及简单的转string和设置、核对大小
  */
-public abstract class AbstractMatrix2D {
+public abstract class AbstractMatrix2D extends PersistentObject {
     protected int columns;
     protected int rows;
 

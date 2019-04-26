@@ -3,6 +3,7 @@ package matrix.linalg;
 import matrix.DoubleMatrix2D;
 import matrix.impl.DenseDoubleMatrix2D;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -13,8 +14,8 @@ public class LUDecomposition {
      * @param a 传入矩阵
      * @return 返回L、U矩阵
      */
-    public static List<DoubleMatrix2D> decomposition(DoubleMatrix2D a) {
-        DoubleMatrix2D U = a;  //a是要分解的矩阵
+    public static List<DoubleMatrix2D> decomposition(DoubleMatrix2D a) throws IOException, ClassNotFoundException {
+        DoubleMatrix2D U = (DoubleMatrix2D) a.deepClone();  //a是要分解的矩阵
         DoubleMatrix2D L = new DenseDoubleMatrix2D(a.rows(), a.columns());
 
         for (int j = 0; j < a.columns(); j++) {
