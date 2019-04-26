@@ -40,6 +40,23 @@ public abstract class DoubleMatrix2D extends AbstractMatrix2D {
         }
     }
 
+    // n x 1 矩阵
+    public DoubleMatrix2D assign(double[] var1) {
+        if (var1.length != this.rows) {
+            throw new IllegalArgumentException("Must have same number of rows: rows=" + var1.length + "rows()=" + this.rows);
+        }
+        int var3 = this.rows;
+        while (true) {
+            --var3;
+            if (var3 < 0) {
+                break;
+            }
+
+            this.setQuick(var3, 0, var1[var3]);
+        }
+        return this;
+    }
+
     /**
      * @param var1 设置值多少行
      * @param var2 设置值多少列

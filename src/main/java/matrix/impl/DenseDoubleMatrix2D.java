@@ -13,6 +13,12 @@ public class DenseDoubleMatrix2D extends DoubleMatrix2D {
         this.assign(var1);
     }
 
+    // 构建向量 n x 1
+    public DenseDoubleMatrix2D(double[] var1) {
+        this(var1.length, 1);
+        this.assign(var1);
+    }
+
     public DenseDoubleMatrix2D(int var1, int var2) {
         this.setUp(var1, var2);
         this.elements = new double[var1 * var2];

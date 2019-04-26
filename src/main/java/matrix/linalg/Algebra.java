@@ -4,6 +4,8 @@ import matrix.DoubleMatrix2D;
 import matrix.impl.DenseDoubleMatrix2D;
 import matrix.impl.PersistentObject;
 
+import java.io.IOException;
+
 /**
  * 对DoubleMatrix2D进行一些运算
  */
@@ -53,5 +55,59 @@ public class Algebra extends PersistentObject {
             }
         }
         return MatrixC;
+    }
+
+    public static DoubleMatrix2D subMatrix(DoubleMatrix2D a, DoubleMatrix2D b) {
+        if (a.columns() != b.columns() || a.rows() != b.rows())
+            throw new IllegalArgumentException("Incompatible dimensions: " + a.toStringShort() + " and " + b.toStringShort());
+        DoubleMatrix2D MatrixC = new DenseDoubleMatrix2D(a.rows(), a.columns());
+        for (int i = 0; i < a.rows(); i++) {
+            for (int j = 0; j < a.columns(); j++) {
+                MatrixC.setQuick(j, i, a.getQuick(i, j) - b.getQuick(i, j));
+            }
+        }
+        return MatrixC;
+    }
+
+    public static DoubleMatrix2D addMatrix(DoubleMatrix2D a, DoubleMatrix2D b) {
+        if (a.columns() != b.columns() || a.rows() != b.rows())
+            throw new IllegalArgumentException("Incompatible dimensions: " + a.toStringShort() + " and " + b.toStringShort());
+        DoubleMatrix2D MatrixC = new DenseDoubleMatrix2D(a.rows(), a.columns());
+        for (int i = 0; i < a.rows(); i++) {
+            for (int j = 0; j < a.columns(); j++) {
+                MatrixC.setQuick(j, i, a.getQuick(i, j) + b.getQuick(i, j));
+            }
+        }
+        return MatrixC;
+    }
+
+    /**
+     * @param a     系数矩阵
+     * @param b     b
+     * @param leven 迭代次数
+     * @return 返回结果 n x 1
+     */
+    public static DoubleMatrix2D jacobi(DoubleMatrix2D a, double[] b, int leven) throws IOException, ClassNotFoundException {
+        return jacobi(a, b, leven, new double[b.length]);
+    }
+
+    public static DoubleMatrix2D jacobi(DoubleMatrix2D a, double[] b, int leven, double[] x0) throws IOException, ClassNotFoundException {
+        int size = a.rows();
+        if (size != a.columns()) {
+            throw new IllegalArgumentException("Incompatible dimensions: " + a.toStringShort());
+        }
+        DoubleMatrix2D DF1 = new DenseDoubleMatrix2D(a.rows(), a.columns());
+        DoubleMatrix2D LAU = (DoubleMatrix2D) a.deepClone();
+        for (int i = 0; i < size; i++) {
+            DF1.setQuick(i, i, 1 / a.getQuick(i, i));
+            LAU.setQuick(i, i, 0);
+        }
+        DoubleMatrix2D x = new DenseDoubleMatrix2D(x0);
+        DoubleMatrix2D xa = Algebra.mult(DF1, LAU);
+        DoubleMatrix2D xb = Algebra.mult(DF1, new DenseDoubleMatrix2D(b));
+        for (int i = 0; i < leven; i++) {
+            x = Algebra.subMatrix(xb, Algebra.mult(xa, x));
+        }
+        return x;
     }
 }

@@ -90,6 +90,21 @@ public class Main {
         System.out.println(ld.get(0));
         System.out.println(ld.get(1));
         System.out.println(Algebra.mult(d, Algebra.transpose(d)));
+
+        // TODO 没有判断为严格对角占优矩阵（充分条件）
+        // ---------------------------------------------------------------雅可比方法求解方程组测试
+        DenseDoubleMatrix2D d2 = new DenseDoubleMatrix2D(new double[][]{
+                {3, 1},
+                {1, 2}
+        });
+        System.out.println(Algebra.jacobi(d2, new double[]{5, 5}, 100));
+
+        DenseDoubleMatrix2D d3 = new DenseDoubleMatrix2D(new double[][]{
+                {3, 1, -1},
+                {2, 4, 1},
+                {-1, 2, 5}
+        });
+        System.out.println(Algebra.jacobi(d3, new double[]{4, 1, 1}, 100));
     }
 
     public static void main(String[] args) throws Exception {
