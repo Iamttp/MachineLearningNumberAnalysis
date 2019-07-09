@@ -70,6 +70,7 @@ public abstract class DoubleMatrix2D extends AbstractMatrix2D {
         return var0.rows() + " x " + var0.columns() + " matrix";
     }
 
+    @Override
     public String toString() {
         String[][] var2 = new String[rows][columns];
         for (int i = 0; i < var2.length; i++) {
@@ -82,8 +83,9 @@ public abstract class DoubleMatrix2D extends AbstractMatrix2D {
         var3.insert(0, "\t" + shape(this) + "\n");
         for (int i = 0; i < var3.length(); i++) {
             if (',' == var3.charAt(i)) {
-                if (var3.charAt(i - 1) == ']')
+                if (var3.charAt(i - 1) == ']') {
                     var3.setCharAt(i, '\n');
+                }
             }
         }
         return var3.toString();

@@ -8,6 +8,8 @@ import java.io.IOException;
 
 /**
  * 对DoubleMatrix2D进行一些运算
+ *
+ * @author ttp
  */
 public class Algebra extends PersistentObject {
     public static final Algebra DEFAULT = new Algebra();
@@ -31,19 +33,22 @@ public class Algebra extends PersistentObject {
 
     public static DoubleMatrix2D mult(DoubleMatrix2D a, DoubleMatrix2D b) {
         //当a的列数与矩阵b的行数不相等时，不能进行点乘，返回null
-        if (a.columns() != b.rows())
+        if (a.columns() != b.rows()) {
             throw new IllegalArgumentException("Incompatible dimensions: " + a.toStringShort() + " and " + b.toStringShort());
+        }
         //c矩阵的行数y，与列数x
         int y = a.rows();
         int x = b.columns();
         DoubleMatrix2D c = new DenseDoubleMatrix2D(y, x);
-        for (int i = 0; i < y; i++)
+        for (int i = 0; i < y; i++) {
             for (int j = 0; j < x; j++) {   //c矩阵的第i行第j列所对应的数值，等于a矩阵的第i行分别乘以b矩阵的第j列之和
                 double res = 0;
-                for (int k = 0; k < b.rows(); k++)
+                for (int k = 0; k < b.rows(); k++) {
                     res += a.getQuick(i, k) * b.getQuick(k, j);
+                }
                 c.setQuick(i, j, res);
             }
+        }
         return c;
     }
 
@@ -58,8 +63,9 @@ public class Algebra extends PersistentObject {
     }
 
     public static DoubleMatrix2D subMatrix(DoubleMatrix2D a, DoubleMatrix2D b) {
-        if (a.columns() != b.columns() || a.rows() != b.rows())
+        if (a.columns() != b.columns() || a.rows() != b.rows()) {
             throw new IllegalArgumentException("Incompatible dimensions: " + a.toStringShort() + " and " + b.toStringShort());
+        }
         DoubleMatrix2D MatrixC = new DenseDoubleMatrix2D(a.rows(), a.columns());
         for (int i = 0; i < a.rows(); i++) {
             for (int j = 0; j < a.columns(); j++) {
@@ -70,8 +76,9 @@ public class Algebra extends PersistentObject {
     }
 
     public static DoubleMatrix2D addMatrix(DoubleMatrix2D a, DoubleMatrix2D b) {
-        if (a.columns() != b.columns() || a.rows() != b.rows())
+        if (a.columns() != b.columns() || a.rows() != b.rows()) {
             throw new IllegalArgumentException("Incompatible dimensions: " + a.toStringShort() + " and " + b.toStringShort());
+        }
         DoubleMatrix2D MatrixC = new DenseDoubleMatrix2D(a.rows(), a.columns());
         for (int i = 0; i < a.rows(); i++) {
             for (int j = 0; j < a.columns(); j++) {

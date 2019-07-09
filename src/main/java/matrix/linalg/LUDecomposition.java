@@ -7,6 +7,9 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * @author ttp
+ */
 public class LUDecomposition {
     /**
      * LU 分解 TODO 没有根据连续数组进行优化
