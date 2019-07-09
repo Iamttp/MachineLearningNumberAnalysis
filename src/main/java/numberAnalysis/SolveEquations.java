@@ -2,6 +2,9 @@ package numberAnalysis;
 
 import core.F;
 
+/**
+ * @author ttp
+ */
 public class SolveEquations {
 
     /**

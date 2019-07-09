@@ -5,6 +5,8 @@ import core.F;
 /**
  * 函数求导，可重复求导
  * 参考：`https://www.cnblogs.com/thinkam/p/7933279.html#head-6
+ *
+ * @author ttp
  */
 public class DerivedFunction implements F {
     private static final double DELTA_X = 0.000001;

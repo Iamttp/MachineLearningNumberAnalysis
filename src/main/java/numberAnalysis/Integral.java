@@ -4,6 +4,8 @@ import core.F;
 
 /**
  * 函数求积
+ *
+ * @author ttp
  */
 public class Integral {
 

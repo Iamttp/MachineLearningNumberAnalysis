@@ -7,6 +7,8 @@ import core.F2;
  * <p>
  * !!!区间左闭右开
  * !!!rungeKutta方法绝大多数情况下更优
+ *
+ * @author ttp
  */
 public class OrdinaryDifferential {
 
