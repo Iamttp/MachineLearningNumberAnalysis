@@ -15,7 +15,7 @@ public class LUDecomposition {
      * LU 分解 TODO 没有根据连续数组进行优化
      *
      * @param a 传入矩阵
-     * @return 返回L、U矩阵
+     * @return 返回L、U矩阵  第一个是矩阵因子（加一列并将对角设置为1即为L） 第二个是上三角矩阵U
      */
     public static List<DoubleMatrix2D> decomposition(DoubleMatrix2D a) throws IOException, ClassNotFoundException {
         DoubleMatrix2D U = (DoubleMatrix2D) a.deepClone();  //a是要分解的矩阵
