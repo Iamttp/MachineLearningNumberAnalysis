@@ -31,6 +31,7 @@ public class LUDecompositionTest {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
+        assert ld != null;
         System.out.println(ld.get(0));
         System.out.println(ld.get(1));
 

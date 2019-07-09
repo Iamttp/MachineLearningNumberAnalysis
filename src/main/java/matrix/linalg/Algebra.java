@@ -8,7 +8,7 @@ import java.io.IOException;
 
 /**
  * 对DoubleMatrix2D进行一些运算
- *
+ * TODO Non-transient non-serializable instance field in serializable class
  * @author ttp
  */
 public class Algebra extends PersistentObject {

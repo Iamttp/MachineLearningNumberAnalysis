@@ -21,7 +21,7 @@ public class Arrangement {
      * @param datas 用于排列的数据
      */
     public Arrangement(String[] datas) {
-        this.datas = datas;
+        this.datas = datas.clone();
     }
 
     /**
@@ -99,7 +99,6 @@ public class Arrangement {
     /**
      * 排列选择
      *
-     * @param dataList    待选列表
      * @param resultList  前面（resultIndex-1）个的排列结果
      * @param resultIndex 选择索引，从0开始
      * @param result      最终结果

@@ -3,8 +3,6 @@ package numberAnalysis;
 import core.F;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-
 /*
  * 函数求积测试
  */
@@ -24,6 +22,6 @@ public class IntegralTest {
 
     @Test
     public void trapezoidF() {
-        System.out.println(Integral.TrapezoidF(new myF(), 1, 2, 4000));
+        System.out.println(Integral.trapezoidF(new myF(), 1, 2, 4000));
     }
 }

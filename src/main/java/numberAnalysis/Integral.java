@@ -28,7 +28,7 @@ public class Integral {
     }
 
     /**
-     * TrapezoidF 复合梯形解法，更加灵活
+     * trapezoidF 复合梯形解法，更加灵活
      *
      * @param f      函数
      * @param xleft  左端点
@@ -36,7 +36,7 @@ public class Integral {
      * @param leven  复合 段，值越大精度越高，计算越慢
      * @return 积分结果
      */
-    public static double TrapezoidF(F f, double xleft, double xright, int leven) {
+    public static double trapezoidF(F f, double xleft, double xright, int leven) {
         double h = (xright - xleft) / leven;
         double res = 0;
         for (int i = 0; i < leven; i++) {

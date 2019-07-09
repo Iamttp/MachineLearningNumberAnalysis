@@ -22,7 +22,7 @@ public class Combination {
      * @param datas 用于组合的数据
      */
     public Combination(String[] datas) {
-        this.datas = datas;
+        this.datas = datas.clone();
     }
 
     /**
@@ -84,10 +84,10 @@ public class Combination {
     /**
      * 组合选择
      *
-     * @param dataList    待选列表
      * @param dataIndex   待选开始索引
      * @param resultList  前面（resultIndex-1）个的组合结果
      * @param resultIndex 选择索引，从0开始
+     * @param result    待选列表
      */
     private void select(int dataIndex, String[] resultList, int resultIndex, List<String[]> result) {
         int resultLen = resultList.length;
