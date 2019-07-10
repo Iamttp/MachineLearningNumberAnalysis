@@ -2,8 +2,7 @@ package ML;
 
 import matrix.DoubleMatrix2D;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * k邻近算法
@@ -34,12 +33,20 @@ public class KNeighborsClassifier implements MLBase {
 
     @Override
     public DoubleMatrix2D predict(DoubleMatrix2D testX) {
-        // TODO Returns indices of and distances to the neighbors of each point. 返回每个点的邻居的索引和距离。
-        List<List<Double>> res1 = kneighbors(testX);
-        assert res1 != null;
-        List<Double> neigh_dist = res1.get(0);
-        List<Double> neigh_ind = res1.get(1);
-
+        List<Integer> neigh_ind = kneighbors(testX);
+        DoubleMatrix2D y = this._y;
+        int n_neig = this.n_neighbors;
+        HashMap<Double, Integer> map = new HashMap<>();
+        for (int i = 0; i < n_neig; i++) {
+            int num = neigh_ind.get(i);
+            if (map.containsKey(y.getQuick(0, num))) {
+                map.put(y.getQuick(0, num), map.get(y.getQuick(0, num)) + 1);
+            } else {
+                map.put(y.getQuick(0, num), 0);
+            }
+        }
+        System.out.println(neigh_ind);
+        System.out.println(map);
         return null;
     }
 
@@ -48,11 +55,33 @@ public class KNeighborsClassifier implements MLBase {
      * ind : Indices of the nearest points in the population matrix. 人口矩阵中最近点的指数。
      *
      * @param testX
+     * @return indices of and distances to the neighbors of each point. 返回每个点的邻居的索引和距离。
      */
-    private List<List<Double>> kneighbors(DoubleMatrix2D testX) {
-        // TODO
-
-        return null;
+    private List<Integer> kneighbors(DoubleMatrix2D testX) {
+        List<Double> dist = new ArrayList<>();
+        DoubleMatrix2D train_X = this._fit_X;
+        for (int i = 0; i < train_X.rows(); i++) {
+            double distance = 0;
+            for (int j = 0; j < train_X.columns(); j++) {
+                double x = testX.getQuick(0, j);
+                double y = train_X.getQuick(i, j);
+                // TODO 是否是这样计算
+                distance += (x - y) * (x - y);
+            }
+            dist.add(distance);
+        }
+        HashMap<Double, Integer> map = new HashMap<>();
+        //将值和下标存入Map
+        for (int i = 0; i < dist.size(); i++) {
+            map.put(dist.get(i), i);
+        }
+        Collections.sort(dist);
+        List<Integer> ind = new ArrayList<>();
+        for (Double aDouble : dist) {
+            ind.add(map.get(aDouble));
+        }
+        // TODO 返回dist
+        return ind;
     }
 
     @Override
