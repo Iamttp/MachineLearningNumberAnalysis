@@ -3,7 +3,7 @@ package ML;
 import matrix.DoubleMatrix2D;
 
 public interface MLBase {
-    MLBase fit(DoubleMatrix2D trainX, DoubleMatrix2D trainY);
+    MLBase fit(DoubleMatrix2D trainX, DoubleMatrix2D trainY) throws Exception;
 
     //    get_params();
     //    set_params();

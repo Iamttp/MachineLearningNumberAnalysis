@@ -93,7 +93,7 @@
 * set_params( **params):设置分类器的参数 
 用到最多的便是，fit、predict、score
 
-v 2.4 - v 3.0
+* v 2.4 - v 3.0 编写机器学习算法，朴素贝叶斯算法
 
 参考博客： `https://blog.csdn.net/v_victor/article/details/51319873`
 

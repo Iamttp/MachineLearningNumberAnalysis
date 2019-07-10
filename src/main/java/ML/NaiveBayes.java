@@ -25,7 +25,10 @@ public class NaiveBayes implements MLBase {
     }
 
     @Override
-    public MLBase fit(DoubleMatrix2D trainX, DoubleMatrix2D trainY) {
+    public MLBase fit(DoubleMatrix2D trainX, DoubleMatrix2D trainY) throws Exception {
+        if (trainX.rows() != trainY.columns()) {
+            throw new Exception("Warning! your (trainX.rows())" + trainX.rows() + "!= (testY.columns())" + trainY.columns());
+        }
         this._fit_X = trainX;
         this._y = trainY;
         return this;

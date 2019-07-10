@@ -25,8 +25,11 @@ public class KNeighborsClassifier implements MLBase {
     }
 
     @Override
-    public MLBase fit(DoubleMatrix2D trainX, DoubleMatrix2D trainY) {
+    public MLBase fit(DoubleMatrix2D trainX, DoubleMatrix2D trainY) throws Exception {
         // TODO check_X_y 核对数据是否规范
+        if (trainX.rows() != trainY.columns()) {
+            throw new Exception("Warning! your (trainX.rows())" + trainX.rows() + "!= (testY.columns())" + trainY.columns());
+        }
         this._fit_X = trainX;
         this._y = trainY;
         return this;
