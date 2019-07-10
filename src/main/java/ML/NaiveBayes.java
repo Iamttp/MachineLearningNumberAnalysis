@@ -3,7 +3,6 @@ package ML;
 import matrix.DoubleMatrix2D;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 
 /**
@@ -68,7 +67,7 @@ public class NaiveBayes implements MLBase {
                 res2[k] += Math.log(entry.getValue());
                 k++;
             }
-            System.out.println(Arrays.toString(res2));
+//            System.out.println(Arrays.toString(res2));
             // 4. 最终结果为： 谁的贝叶斯分子大，就是那个类别
             int indx = 0;
             double max = -99999;
