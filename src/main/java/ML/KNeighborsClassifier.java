@@ -36,7 +36,7 @@ public class KNeighborsClassifier implements MLBase {
     public double[] predict(DoubleMatrix2D testX) {
         double[] res = new double[testX.rows()];
         for (int i = 0; i < testX.rows(); i++) {
-            // TODO 优化
+            // TODO 优化， 使DoubleMatrix2D直接返回数组
             ArrayList<Double> in = new ArrayList<>();
             for (int j = 0; j < testX.columns(); j++) {
                 in.add(testX.getQuick(i, j));
@@ -84,7 +84,7 @@ public class KNeighborsClassifier implements MLBase {
             for (int j = 0; j < train_X.columns(); j++) {
                 double x = testX.get(j);
                 double y = train_X.getQuick(i, j);
-                // TODO 是否是这样计算
+                // TODO 欧式距离, 最后好像要开根号
                 distance += (x - y) * (x - y);
             }
             dist.add(distance);
@@ -99,7 +99,7 @@ public class KNeighborsClassifier implements MLBase {
         for (Double aDouble : dist) {
             ind.add(map.get(aDouble));
         }
-        // TODO 返回dist
+        // TODO 返回dist，距离未返回
 //        System.out.println(dist);
         return ind;
     }
