@@ -1,6 +1,7 @@
 package ML;
 
 import matrix.DoubleMatrix2D;
+import org.junit.Assert;
 
 import java.util.*;
 
@@ -32,22 +33,40 @@ public class KNeighborsClassifier implements MLBase {
     }
 
     @Override
-    public DoubleMatrix2D predict(DoubleMatrix2D testX) {
-        List<Integer> neigh_ind = kneighbors(testX);
-        DoubleMatrix2D y = this._y;
-        int n_neig = this.n_neighbors;
-        HashMap<Double, Integer> map = new HashMap<>();
-        for (int i = 0; i < n_neig; i++) {
-            int num = neigh_ind.get(i);
-            if (map.containsKey(y.getQuick(0, num))) {
-                map.put(y.getQuick(0, num), map.get(y.getQuick(0, num)) + 1);
-            } else {
-                map.put(y.getQuick(0, num), 0);
+    public double[] predict(DoubleMatrix2D testX) {
+        double[] res = new double[testX.rows()];
+        for (int i = 0; i < testX.rows(); i++) {
+            // TODO 优化
+            ArrayList<Double> in = new ArrayList<>();
+            for (int j = 0; j < testX.columns(); j++) {
+                in.add(testX.getQuick(i, j));
             }
+            List<Integer> neigh_ind = kneighbors(in);
+
+            DoubleMatrix2D y = this._y;
+            int n_neig = this.n_neighbors;
+            HashMap<Double, Integer> map = new HashMap<>();
+            for (int j = 0; j < n_neig; j++) {
+                int num = neigh_ind.get(j);
+                if (map.containsKey(y.getQuick(0, num))) {
+                    map.put(y.getQuick(0, num), map.get(y.getQuick(0, num)) + 1);
+                } else {
+                    map.put(y.getQuick(0, num), 0);
+                }
+            }
+//        System.out.println(neigh_ind);
+//            System.out.println(map);
+            int max = 0;
+            double key = 0;
+            for (Map.Entry entry : map.entrySet()) {
+                if ((Integer) entry.getValue() > max) {
+                    max = (Integer) entry.getValue();
+                    key = (Double) entry.getKey();
+                }
+            }
+            res[i] = key;
         }
-        System.out.println(neigh_ind);
-        System.out.println(map);
-        return null;
+        return res;
     }
 
     /**
@@ -57,13 +76,13 @@ public class KNeighborsClassifier implements MLBase {
      * @param testX
      * @return indices of and distances to the neighbors of each point. 返回每个点的邻居的索引和距离。
      */
-    private List<Integer> kneighbors(DoubleMatrix2D testX) {
+    private List<Integer> kneighbors(List<Double> testX) {
         List<Double> dist = new ArrayList<>();
         DoubleMatrix2D train_X = this._fit_X;
         for (int i = 0; i < train_X.rows(); i++) {
             double distance = 0;
             for (int j = 0; j < train_X.columns(); j++) {
-                double x = testX.getQuick(0, j);
+                double x = testX.get(j);
                 double y = train_X.getQuick(i, j);
                 // TODO 是否是这样计算
                 distance += (x - y) * (x - y);
@@ -81,11 +100,24 @@ public class KNeighborsClassifier implements MLBase {
             ind.add(map.get(aDouble));
         }
         // TODO 返回dist
+//        System.out.println(dist);
         return ind;
     }
 
     @Override
-    public double score(DoubleMatrix2D testX, DoubleMatrix2D testY) {
-        return 0;
+    public double score(DoubleMatrix2D testX, DoubleMatrix2D testY) throws Exception {
+        double[] res = this.predict(testX);
+        if (res.length != testY.columns()) {
+            throw new Exception("Warning! your (res.length)" + res.length + "!= (testY.columns())" + testY.columns());
+        }
+        int isOk = 0;
+        for (int i = 0; i < res.length; i++) {
+            if (res[i] == testY.getQuick(0, i)) {
+                isOk++;
+            }
+        }
+        System.out.println(isOk);
+        System.out.println(res.length);
+        return (double) isOk / (double) res.length;
     }
 }
