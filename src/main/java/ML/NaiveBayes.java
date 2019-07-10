@@ -5,7 +5,6 @@ import matrix.DoubleMatrix2D;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Map;
 
 /**
  * 朴素贝叶斯算法，朴素：特征条件独立；贝叶斯：基于贝叶斯定理
@@ -87,7 +86,7 @@ public class NaiveBayes implements MLBase {
                 indx1++;
             }
         }
-        System.out.println(Arrays.toString(res));
+//        System.out.println(Arrays.toString(res));
         return res;
     }
 
@@ -112,9 +111,6 @@ public class NaiveBayes implements MLBase {
                     allNum++;
                 }
             }
-            System.out.print(in.get(j));
-            System.out.print("\t" + type + "\t");
-            System.out.println((double) equNum / (double) allNum);
             // ！！！！另外遇到一个问题就是下溢出，这是由于太多很小的数相乘造成的。
             //这种解决方法是对乘机取自然对数。在代数中，ln(a*b*c)=ln(a)+ln(b)+ln(c)。
             res += Math.log((double) equNum / (double) allNum);
@@ -124,6 +120,18 @@ public class NaiveBayes implements MLBase {
 
     @Override
     public double score(DoubleMatrix2D testX, DoubleMatrix2D testY) throws Exception {
-        return 0;
+        double[] res = this.predict(testX);
+        if (res.length != testY.columns()) {
+            throw new Exception("Warning! your (res.length)" + res.length + "!= (testY.columns())" + testY.columns());
+        }
+        int isOk = 0;
+        for (int i = 0; i < res.length; i++) {
+            if (res[i] == testY.getQuick(0, i)) {
+                isOk++;
+            }
+        }
+        System.out.println(isOk);
+        System.out.println(res.length);
+        return (double) isOk / (double) res.length;
     }
 }
