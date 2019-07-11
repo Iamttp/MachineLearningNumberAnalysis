@@ -115,3 +115,10 @@
 测试结果：
     
     e（判断相等误差）设置为0.5时测试集全部通过 /W\
+
+* v 3.3 决策树实现
+
+参考博客：  `https://blog.csdn.net/it_beecoder/article/details/79554388`
+            `https://blog.csdn.net/u012328159/article/details/79396893`
+            `https://blog.csdn.net/ichuzhen/article/details/53981715`
+参考视频：  `https://www.bilibili.com/video/av35848965?t=115`

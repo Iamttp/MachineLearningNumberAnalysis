@@ -26,7 +26,6 @@ public class KNeighborsClassifier implements MLBase {
 
     @Override
     public MLBase fit(DoubleMatrix2D trainX, DoubleMatrix2D trainY) throws Exception {
-        // TODO check_X_y 核对数据是否规范
         if (trainX.rows() != trainY.columns()) {
             throw new Exception("Warning! your (trainX.rows())" + trainX.rows() + "!= (testY.columns())" + trainY.columns());
         }
@@ -39,6 +38,7 @@ public class KNeighborsClassifier implements MLBase {
     public double[] predict(DoubleMatrix2D testX) {
         double[] res = new double[testX.rows()];
         for (int i = 0; i < testX.rows(); i++) {
+            // 对每一行进行预测
             // TODO 优化， 使DoubleMatrix2D直接返回数组
             ArrayList<Double> in = new ArrayList<>();
             for (int j = 0; j < testX.columns(); j++) {
@@ -50,11 +50,12 @@ public class KNeighborsClassifier implements MLBase {
             int n_neig = this.n_neighbors;
             HashMap<Double, Integer> map = new HashMap<>();
             for (int j = 0; j < n_neig; j++) {
+                // 最近邻居的下标
                 int num = neigh_ind.get(j);
                 if (map.containsKey(y.getQuick(0, num))) {
                     map.put(y.getQuick(0, num), map.get(y.getQuick(0, num)) + 1);
                 } else {
-                    map.put(y.getQuick(0, num), 0);
+                    map.put(y.getQuick(0, num), 1);
                 }
             }
 //        System.out.println(neigh_ind);
