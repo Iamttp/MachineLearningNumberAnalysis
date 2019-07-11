@@ -2,11 +2,12 @@ package ML;
 
 import matrix.DoubleMatrix2D;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
+/**
+ * 决策树（decision tree）
+ * ID3算法， 不能用于连续数据
+ */
 public class DecisionTree implements MLBase {
     private DoubleMatrix2D _fit_X;
     private DoubleMatrix2D _y;
@@ -23,13 +24,43 @@ public class DecisionTree implements MLBase {
 
     @Override
     public double[] predict(DoubleMatrix2D testX) {
+        // 1. 求取信息熵
         DoubleMatrix2D y = this._y;
         List<Double> p = new ArrayList<>();
         for (int i = 0; i < y.columns(); i++) {
             p.add(i, y.getQuick(0, i));
         }
         double entD = getEnt(p);
-        System.out.println(entD);
+
+        // 2. 求取每个特征的信息增益
+        List<Double> resUp = new ArrayList<>();
+        DoubleMatrix2D train_X = this._fit_X;
+        for (int i = 0; i < train_X.columns(); i++) {
+            // 对于每一个特征, 找到特征可以取的值
+            double sum = 0;
+            Set<Double> allFeat = new TreeSet<>();
+            for (int j = 0; j < train_X.rows(); j++) {
+                allFeat.add(train_X.getQuick(j, i));
+            }
+
+            for (double x : allFeat) {
+                double count = 0;
+                List<Double> list = new ArrayList<>();
+                for (int j = 0; j < train_X.rows(); j++) {
+                    if (train_X.getQuick(j, i) == x) {
+                        list.add(y.getQuick(0, j));
+                        count++;
+                    }
+                }
+                sum += count / y.columns() * getEnt(list);
+            }
+            resUp.add(entD - sum);
+        }
+        System.out.println("信息增益:\t" + resUp);
+
+        // TODO 3. 根据最大信息增益，选为划分属性, 需要建一颗树
+
+
         return new double[0];
     }
 

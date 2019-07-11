@@ -5,6 +5,10 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
+/**
+ * 载入数据类
+ * 默认最后一行存储结果
+ */
 public class LoadDate {
     private double[][] featureGet;
     private double[][] resGet;
@@ -25,7 +29,6 @@ public class LoadDate {
         }
     }
 
-    // 默认最后一行存储结果
     private boolean load_date(String path) {
         // 使用ArrayList来存储每行读取到的字符串
         ArrayList<String> arrayList = new ArrayList<>();
