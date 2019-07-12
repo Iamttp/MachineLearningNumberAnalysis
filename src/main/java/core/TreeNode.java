@@ -1,7 +1,6 @@
 package core;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -11,25 +10,18 @@ import java.util.List;
  */
 public class TreeNode<T> {
     private T name;
+    // 用于toString 层次
     public long deep;
+    // 用于记录子节点
     public ArrayList<TreeNode> sonNode = new ArrayList<>();
+    // 用于toString 记录分组
     public List<List<Integer>> label = new ArrayList<>();
-
-    public TreeNode(long deep) {
-        this.deep = deep;
-    }
+    // 用于记录叶子节点记录类型
+    public Double res = null;
 
     public TreeNode(T name, long deep) {
         this.name = name;
         this.deep = deep;
-    }
-
-    public T getName() {
-        return name;
-    }
-
-    public void setName(T name) {
-        this.name = name;
     }
 
     public static String repeatString(String str, long n, String seg) {
@@ -42,8 +34,12 @@ public class TreeNode<T> {
 
     @Override
     public String toString() {
-        return "TreeNode 特征选取行 = " + name + "," + "分类序号 = " + label + ":\n " +
-                repeatString("\t", deep * 3, " ") + sonNode + "\n" +
-                repeatString("\t", deep * 3, " ");
+        if (res != null) {
+            return repeatString("\t", deep * 3, " ") + "TreeNode 特征选取列 = " + name + "," + "分类序号 = " + label + "," + "结果 = " + res + ":\n " +
+                    repeatString("\t", deep * 3, " ") + sonNode + "\n";
+        } else {
+            return repeatString("\t", deep * 3, " ") + "TreeNode 特征选取列 = " + name + "," + "分类序号 = " + label + ":\n " +
+                    repeatString("\t", deep * 3, " ") + sonNode + "\n";
+        }
     }
 }

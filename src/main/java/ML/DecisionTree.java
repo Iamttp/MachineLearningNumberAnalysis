@@ -6,6 +6,7 @@ import matrix.DoubleMatrix2D;
 import matrix.impl.DenseDoubleMatrix2D;
 
 import java.util.*;
+import java.util.List;
 
 /**
  * 决策树（decision tree）
@@ -27,8 +28,13 @@ public class DecisionTree implements MLBase {
 
     @Override
     public double[] predict(DoubleMatrix2D testX) {
-        TreeNode<Integer> res = createTree(this._fit_X, this._y, 1);
-        System.out.println(res);
+        List<Integer> labelRow = new ArrayList<>();
+        for (int i = 0; i < this._y.columns(); i++) {
+            labelRow.add(i + 1);
+        }
+        TreeNode<Integer> res = createTree(this._fit_X, this._y, labelRow, 0);
+        // TODO 难看的很依旧QAQ
+        System.out.println(res.toString().replaceAll("[\\[\\]]", " "));
         return new double[0];
     }
 
@@ -56,7 +62,21 @@ public class DecisionTree implements MLBase {
         return -sum;
     }
 
-    private TreeNode<Integer> createTree(DoubleMatrix2D train_X, DoubleMatrix2D y, long deep) {
+    private TreeNode<Integer> createTree(DoubleMatrix2D train_X, DoubleMatrix2D y, List<Integer> labelRow, long deep) {
+        double uniq = y.getQuick(0, 0);
+        boolean flag = false;
+        for (int i = 0; i < y.columns(); i++) {
+            if (uniq != y.getQuick(0, i)) {
+                flag = true;
+                break;
+            }
+        }
+        if (!flag) {
+            TreeNode<Integer> node = new TreeNode<>(null, deep);
+            node.res = uniq;
+            return node;
+        }
+
         // 1. 求取信息熵
         List<Double> p = new ArrayList<>();
         for (int i = 0; i < y.columns(); i++) {
@@ -108,13 +128,15 @@ public class DecisionTree implements MLBase {
         List<List<Integer>> selList = new ArrayList<>();
         for (double x : allFeat) {
             List<Integer> list = new ArrayList<>();
+            List<Integer> listLable = new ArrayList<>();
+
             for (int j = 0; j < train_X.rows(); j++) {
                 if (train_X.getQuick(j, maxIndex) == x) {
+                    listLable.add(labelRow.get(j));
                     list.add(j);
                 }
             }
-            System.out.println("\t分类序号：\t" + list);
-            selList.add(list);
+            selList.add(listLable);
             // 去除当前选中特征重新设置训练数据
             double[][] train_x = new double[list.size()][];
             double[][] train_y = new double[1][list.size()];
@@ -135,10 +157,8 @@ public class DecisionTree implements MLBase {
             for (int i = 0; i < list.size(); i++) {
                 train_y[0][i] = y.getQuick(0, list.get(i));
             }
-            if (list.size() == 1) {
-                return node;
-            }
-            node.sonNode.add(createTree(new DenseDoubleMatrix2D(train_x), new DenseDoubleMatrix2D(train_y), deep + 1));
+            System.out.println("\t分类序号：\t" + listLable);
+            node.sonNode.add(createTree(new DenseDoubleMatrix2D(train_x), new DenseDoubleMatrix2D(train_y), listLable, deep + 1));
         }
         node.label = selList;
         return node;
