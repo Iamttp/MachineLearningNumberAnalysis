@@ -1,7 +1,7 @@
 package ML;
 
+import core.LoadDate;
 import matrix.impl.DenseDoubleMatrix2D;
-import org.junit.Before;
 import org.junit.Test;
 
 public class NaiveBayesTest {

@@ -1,7 +1,7 @@
 package ML;
 
+import core.MLBase;
 import matrix.DoubleMatrix2D;
-import org.junit.Assert;
 
 import java.util.*;
 

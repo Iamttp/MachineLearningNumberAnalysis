@@ -90,4 +90,8 @@ public abstract class DoubleMatrix2D extends AbstractMatrix2D {
         }
         return var3.toString();
     }
+
+    public abstract double[] getOneCol(int row);
+
+    public abstract double[] getOneRow(int col);
 }

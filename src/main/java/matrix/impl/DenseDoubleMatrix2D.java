@@ -37,4 +37,22 @@ public class DenseDoubleMatrix2D extends DoubleMatrix2D {
     protected int index(int var1, int var2) {
         return var1 * this.columns + var2;
     }
+
+    @Override
+    public double[] getOneCol(int col) {
+        double[] res = new double[this.rows];
+        for (int i = 0; i < this.rows; i++) {
+            res[i] = this.getQuick(i, col);
+        }
+        return res;
+    }
+
+    @Override
+    public double[] getOneRow(int row) {
+        double[] res = new double[this.columns];
+        for (int i = 0; i < this.columns; i++) {
+            res[i] = this.getQuick(row, i);
+        }
+        return res;
+    }
 }
