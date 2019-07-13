@@ -4,24 +4,70 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 树
+ * 树，树的边的值由子节点的edgeVal存储， T即为边值的类型
+ * 也可以设置T为结构体，记录边值和节点值
+ * <p>
+ * // 用于toString 记录分组
+ * //    public List<List<Integer>> label = new ArrayList<>();
+ * // 用于记录叶子节点记录类型
+ * //    public Double res = null;
  *
- * @param <T>
+ * @author ttp
  */
 public class TreeNode<T> {
-    private T name;
-    // 用于toString 层次
-    public long deep;
-    // 用于记录子节点
-    public ArrayList<TreeNode> sonNode = new ArrayList<>();
-    // 用于toString 记录分组
-    public List<List<Integer>> label = new ArrayList<>();
-    // 用于记录叶子节点记录类型
-    public Double res = null;
+    private int parentId;
+    private int selfId;
+    public T edgeVal;
+    public List<TreeNode> sonNode;
 
-    public TreeNode(T name, long deep) {
-        this.name = name;
+    /**
+     * 用于toString 层次
+     */
+    private long deep;
+
+    public TreeNode(int selfId) {
+        this.selfId = selfId;
+        sonNode = new ArrayList<>();
+    }
+
+    public TreeNode(int selfId, long deep) {
+        this.selfId = selfId;
         this.deep = deep;
+        sonNode = new ArrayList<>();
+    }
+
+    public TreeNode(int selfId, T edgeVal) {
+        this.selfId = selfId;
+        this.edgeVal = edgeVal;
+        sonNode = new ArrayList<>();
+    }
+
+    public TreeNode(int selfId, T edgeVal, long deep) {
+        this.selfId = selfId;
+        this.deep = deep;
+        this.edgeVal = edgeVal;
+        sonNode = new ArrayList<>();
+    }
+
+    public void addSonNode(TreeNode treeNode) {
+        treeNode.parentId = this.selfId;
+        treeNode.deep = this.deep + 1;
+        this.sonNode.add(treeNode);
+    }
+
+    public boolean isLeaf() {
+        if (sonNode == null) {
+            return true;
+        } else {
+            return sonNode.isEmpty();
+        }
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("\n");
+        return iteratorTree(this);
     }
 
     public static String repeatString(String str, long n, String seg) {
@@ -32,14 +78,17 @@ public class TreeNode<T> {
         return sb.toString();
     }
 
-    @Override
-    public String toString() {
-        if (res != null) {
-            return repeatString("\t", deep * 3, " ") + "TreeNode 特征选取列 = " + name + "," + "分类序号 = " + label + "," + "结果 = " + res + ":\n " +
-                    repeatString("\t", deep * 3, " ") + sonNode + "\n";
-        } else {
-            return repeatString("\t", deep * 3, " ") + "TreeNode 特征选取列 = " + name + "," + "分类序号 = " + label + ":\n " +
-                    repeatString("\t", deep * 3, " ") + sonNode + "\n";
+    /**
+     * 遍历多叉树
+     */
+    public String iteratorTree(TreeNode manyTreeNode) {
+        StringBuilder buffer = new StringBuilder();
+        buffer.append(repeatString("\t", ((TreeNode) manyTreeNode).deep * 3, " ")).append("TreeNode: ").append(((TreeNode) manyTreeNode).selfId).append(",edgeVal: ").append(((TreeNode) manyTreeNode).edgeVal).append(":\n ");
+        for (Object index : manyTreeNode.sonNode) {
+            if (((TreeNode) index).sonNode != null) {
+                buffer.append(iteratorTree(((TreeNode) index)));
+            }
         }
+        return buffer.toString();
     }
 }

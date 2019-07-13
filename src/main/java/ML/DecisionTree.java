@@ -2,6 +2,7 @@ package ML;
 
 import core.MLBase;
 import core.TreeNode;
+import javafx.util.Pair;
 import matrix.DoubleMatrix2D;
 import matrix.impl.DenseDoubleMatrix2D;
 
@@ -16,6 +17,9 @@ public class DecisionTree implements MLBase {
     private DoubleMatrix2D _fit_X;
     private DoubleMatrix2D _y;
 
+    /**
+     * pair: Integer 存储树的边值（特征选取的值），Double 存储节点的值（哪一列特征）
+     */
     @Override
     public MLBase fit(DoubleMatrix2D trainX, DoubleMatrix2D trainY) throws Exception {
         if (trainX.rows() != trainY.columns()) {
@@ -28,13 +32,13 @@ public class DecisionTree implements MLBase {
 
     @Override
     public double[] predict(DoubleMatrix2D testX) {
-        List<Integer> labelRow = new ArrayList<>();
-        for (int i = 0; i < this._y.columns(); i++) {
-            labelRow.add(i + 1);
+        TreeNode<Pair<Integer, Double>> res = createTree(this._fit_X, this._y, -1, 0);
+        System.out.println(res);
+
+        for (int i = 0; i < testX.rows(); i++) {
+            double[] oneRow = testX.getOneRow(i);
+            // TODO 树记录分类条件
         }
-        TreeNode<Integer> res = createTree(this._fit_X, this._y, labelRow, 0);
-        // TODO 难看的很依旧QAQ
-        System.out.println(res.toString().replaceAll("[\\[\\]]", " "));
         return new double[0];
     }
 
@@ -62,7 +66,7 @@ public class DecisionTree implements MLBase {
         return -sum;
     }
 
-    private TreeNode<Integer> createTree(DoubleMatrix2D train_X, DoubleMatrix2D y, List<Integer> labelRow, long deep) {
+    private TreeNode<Pair<Integer, Double>> createTree(DoubleMatrix2D train_X, DoubleMatrix2D y, int selValue, int deep) {
         double uniq = y.getQuick(0, 0);
         boolean flag = false;
         for (int i = 0; i < y.columns(); i++) {
@@ -72,8 +76,8 @@ public class DecisionTree implements MLBase {
             }
         }
         if (!flag) {
-            TreeNode<Integer> node = new TreeNode<>(null, deep);
-            node.res = uniq;
+            Pair<Integer, Double> pair = new Pair<>(selValue, -1.0);
+            TreeNode<Pair<Integer, Double>> node = new TreeNode<>((int) uniq, pair, deep + 1);
             return node;
         }
 
@@ -107,7 +111,7 @@ public class DecisionTree implements MLBase {
             resUp.add(entD - sum);
         }
         // TODO 3. 根据最大信息增益，选为划分属性, 需要建一颗树
-        System.out.print("信息增益:\t" + resUp);
+        System.out.println("信息增益:\t" + resUp);
         int maxIndex = 0;
         double max = -99999.0;
         for (int i = 0; i < resUp.size(); i++) {
@@ -117,8 +121,8 @@ public class DecisionTree implements MLBase {
             }
         }
         // 存储第几列
-        System.out.print("\t分类特征：\t" + maxIndex);
-        TreeNode<Integer> node = new TreeNode<>(maxIndex, deep);
+//        System.out.print("\t分类特征：\t" + maxIndex);
+        TreeNode<Pair<Integer, Double>> node = new TreeNode<>(-1, deep);
         // 对于每一个特征, 找到特征可以取的值
         Set<Double> allFeat = new TreeSet<>();
         for (int j = 0; j < train_X.rows(); j++) {
@@ -128,15 +132,12 @@ public class DecisionTree implements MLBase {
         List<List<Integer>> selList = new ArrayList<>();
         for (double x : allFeat) {
             List<Integer> list = new ArrayList<>();
-            List<Integer> listLable = new ArrayList<>();
 
             for (int j = 0; j < train_X.rows(); j++) {
                 if (train_X.getQuick(j, maxIndex) == x) {
-                    listLable.add(labelRow.get(j));
                     list.add(j);
                 }
             }
-            selList.add(listLable);
             // 去除当前选中特征重新设置训练数据
             double[][] train_x = new double[list.size()][];
             double[][] train_y = new double[1][list.size()];
@@ -157,10 +158,11 @@ public class DecisionTree implements MLBase {
             for (int i = 0; i < list.size(); i++) {
                 train_y[0][i] = y.getQuick(0, list.get(i));
             }
-            System.out.println("\t分类序号：\t" + listLable);
-            node.sonNode.add(createTree(new DenseDoubleMatrix2D(train_x), new DenseDoubleMatrix2D(train_y), listLable, deep + 1));
+//            System.out.println("\t分类序号：\t" + listLable);
+            node.edgeVal = new Pair<>(selValue, (double) maxIndex);
+            node.sonNode.add(createTree(new DenseDoubleMatrix2D(train_x), new DenseDoubleMatrix2D(train_y), (int) x, deep + 1));
         }
-        node.label = selList;
+//        node.label = selList;
         return node;
     }
 
