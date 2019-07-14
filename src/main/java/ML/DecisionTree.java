@@ -16,6 +16,7 @@ import java.util.List;
 public class DecisionTree implements MLBase {
     private DoubleMatrix2D _fit_X;
     private DoubleMatrix2D _y;
+    private Map<Integer, Set<Double>> mapForFeature = new HashMap<>();
 
     /**
      * pair: Integer 存储树的边值（特征选取的值），Double 存储节点的值（哪一列特征）
@@ -32,6 +33,14 @@ public class DecisionTree implements MLBase {
 
     @Override
     public double[] predict(DoubleMatrix2D testX) {
+        for (int maxIndex = 0; maxIndex < this._fit_X.columns(); maxIndex++) {
+            Set<Double> allFeat = new TreeSet<>();
+            for (int j = 0; j < this._fit_X.rows(); j++) {
+                allFeat.add(this._fit_X.getQuick(j, maxIndex));
+            }
+            mapForFeature.put(maxIndex, allFeat);
+        }
+
         TreeNode<Pair<Integer, Double>> res = createTree(this._fit_X, this._y, -1, 0);
         System.out.println(res);
 
@@ -113,11 +122,8 @@ public class DecisionTree implements MLBase {
 //        System.out.print("\t分类特征：\t" + maxIndex);
         TreeNode<Pair<Integer, Double>> node = new TreeNode<>(-1, deep);
         // 对于每一个特征, 找到特征可以取的值
-        Set<Double> allFeat = new TreeSet<>();
-        for (int j = 0; j < train_X.rows(); j++) {
-            allFeat.add(train_X.getQuick(j, maxIndex));
-        }
-
+        Set<Double> allFeat = this.mapForFeature.get(maxIndex);
+        System.out.println(allFeat);
         for (double x : allFeat) {
             // x 对于每一个选取特征中可以取的值，找到哪些行传入list中
             List<Integer> list = new ArrayList<>();
@@ -153,12 +159,21 @@ public class DecisionTree implements MLBase {
             double[] uniq = (y).getOneRow(0);
             Arrays.sort(uniq);
             // 所有的样本都相等
-            if (uniq[0] == uniq[uniq.length - 1]) {
-                Pair<Integer, Double> pair = new Pair<>(selValue, -1.0);
-                node.sonNode.add(new TreeNode<>((int) uniq[0], pair, deep + 1));
-                break;
+            if (list.size() != 0) {
+//                Pair<Integer, Double> pair = new Pair<>(selValue, -1.0);
+//                node.sonNode.add(new TreeNode<>((int) 9, pair, deep + 1));
+                if (uniq[0] == uniq[uniq.length - 1]) {
+                    Pair<Integer, Double> pair = new Pair<>(selValue, -1.0);
+                    node.sonNode.add(new TreeNode<>((int) uniq[0], pair, deep + 1));
+                    break;
+                } else {
+                    node.sonNode.add(createTree(new DenseDoubleMatrix2D(train_x), new DenseDoubleMatrix2D(train_y), (int) x, deep + 1));
+                }
             } else {
-                node.sonNode.add(createTree(new DenseDoubleMatrix2D(train_x), new DenseDoubleMatrix2D(train_y), (int) x, deep + 1));
+                // TODO 针对null情况
+                Pair<Integer, Double> pair = new Pair<>(selValue, -1.0);
+                node.sonNode.add(new TreeNode<>((int) 9, pair, deep + 1));
+                break;
             }
         }
 //        node.label = selList;
@@ -176,6 +191,9 @@ public class DecisionTree implements MLBase {
                 } else {
                     return getValforTree(son, oneRow);
                 }
+            }
+            if (son.getSelfId() != -1) {
+                return son.getSelfId();
             }
         }
         return -1;
