@@ -83,12 +83,16 @@ public class TreeNode<T> {
      */
     public String iteratorTree(TreeNode manyTreeNode) {
         StringBuilder buffer = new StringBuilder();
-        buffer.append(repeatString("\t", ((TreeNode) manyTreeNode).deep * 3, " ")).append("TreeNode: ").append(((TreeNode) manyTreeNode).selfId).append(",edgeVal: ").append(((TreeNode) manyTreeNode).edgeVal).append(":\n ");
+        buffer.append("|").append(repeatString("_", ((TreeNode) manyTreeNode).deep * 3, " ")).append("TreeNode: ").append(((TreeNode) manyTreeNode).selfId).append(",edgeVal: ").append(((TreeNode) manyTreeNode).edgeVal).append(":\n ");
         for (Object index : manyTreeNode.sonNode) {
             if (((TreeNode) index).sonNode != null) {
                 buffer.append(iteratorTree(((TreeNode) index)));
             }
         }
         return buffer.toString();
+    }
+
+    public int getSelfId() {
+        return selfId;
     }
 }
