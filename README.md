@@ -122,3 +122,10 @@
             `https://blog.csdn.net/u012328159/article/details/79396893`
             `https://blog.csdn.net/ichuzhen/article/details/53981715`
 参考视频：  `https://www.bilibili.com/video/av35848965?t=115`
+
+TODO 决策树实现有问题，先学习SVM吧
+
+TODO2 发现SVM比决策树还复杂，/W\
+
+* v 3.9 支持向量机 SVM实现
+
