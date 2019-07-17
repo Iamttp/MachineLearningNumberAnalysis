@@ -1,5 +1,6 @@
-package ML;
+package ML.algorithm;
 
+import ML.AbstractMLBase;
 import matrix.DoubleMatrix2D;
 
 import java.util.ArrayList;

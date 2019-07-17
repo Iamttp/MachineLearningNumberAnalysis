@@ -1,6 +1,6 @@
 package numberAnalysis;
 
-import core.F;
+import numberAnalysis.Core.F;
 
 /**
  * 函数求积

@@ -1,10 +1,8 @@
 package ML;
 
-import matrix.DoubleMatrix2D;
+import ML.algorithm.DecisionTree;
 import matrix.impl.DenseDoubleMatrix2D;
 import org.junit.Test;
-
-import static org.junit.Assert.*;
 
 public class DecisionTreeTest {
 

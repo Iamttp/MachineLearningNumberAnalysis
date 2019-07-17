@@ -1,6 +1,7 @@
 package ML;
 
-import core.LoadDate;
+import ML.algorithm.NaiveBayes;
+import ML.beforeDate.LoadDate;
 import matrix.impl.DenseDoubleMatrix2D;
 import org.junit.Test;
 

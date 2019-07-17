@@ -1,9 +1,7 @@
 package numberAnalysis;
 
-import core.F;
+import numberAnalysis.Core.F;
 import org.junit.Test;
-
-import static org.junit.Assert.*;
 
 /**
  * 函数求导测试

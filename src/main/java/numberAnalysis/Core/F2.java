@@ -1,4 +1,4 @@
-package core;
+package numberAnalysis.Core;
 
 /**
  * 二元方程接口

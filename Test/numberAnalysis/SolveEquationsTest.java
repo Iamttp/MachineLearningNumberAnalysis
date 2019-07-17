@@ -1,6 +1,6 @@
 package numberAnalysis;
 
-import core.F;
+import numberAnalysis.Core.F;
 import org.junit.Test;
 
 /*

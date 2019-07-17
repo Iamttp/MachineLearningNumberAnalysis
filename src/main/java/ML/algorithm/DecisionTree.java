@@ -1,5 +1,7 @@
-package ML;
+package ML.algorithm;
 
+import ML.AbstractMLBase;
+import ML.MLBase;
 import core.TreeNode;
 import javafx.util.Pair;
 import matrix.DoubleMatrix2D;

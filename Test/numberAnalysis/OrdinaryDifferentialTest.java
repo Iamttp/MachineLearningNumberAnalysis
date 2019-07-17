@@ -1,9 +1,7 @@
 package numberAnalysis;
 
-import core.F2;
+import numberAnalysis.Core.F2;
 import org.junit.Test;
-
-import static org.junit.Assert.*;
 
 /*
  * 常微分方程数值解法测试
