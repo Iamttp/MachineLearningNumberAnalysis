@@ -32,7 +32,11 @@ public class DecisionTree implements MLBase {
 
     @Override
     public double[] predict(DoubleMatrix2D testX) {
-        TreeNode<Pair<Integer, Double>> res = createTree(this._fit_X, this._y, -1, 0);
+        Map<Integer, Integer> mapForIndex = new HashMap<>();
+        for (int i = 0; i < this._fit_X.columns(); i++) {
+            mapForIndex.put(i, i);
+        }
+        TreeNode<Pair<Integer, Double>> res = createTree(this._fit_X, this._y, -1, 0, mapForIndex);
         System.out.println(res);
 
         double[] retRes = new double[testX.rows()];
@@ -69,21 +73,21 @@ public class DecisionTree implements MLBase {
         return -sum;
     }
 
-    private TreeNode<Pair<Integer, Double>> createTree(DoubleMatrix2D train_X, DoubleMatrix2D y, int selValue, int deep) {
+    private TreeNode<Pair<Integer, Double>> createTree(DoubleMatrix2D train_X, DoubleMatrix2D y, int selValue, int deep, Map<Integer, Integer> map) {
         if (train_X.columns() == 0) {
             // 针对null情况
-            Map<Double, Integer> map = new HashMap<>();
+            Map<Double, Integer> doubleIntegerHashMap = new HashMap<>();
             for (int i = 0; i < y.columns(); i++) {
                 double num = y.getQuick(0, i);
-                if (map.containsKey(num)) {
-                    map.put(num, map.get(num) + 1);
+                if (doubleIntegerHashMap.containsKey(num)) {
+                    doubleIntegerHashMap.put(num, doubleIntegerHashMap.get(num) + 1);
                 } else {
-                    map.put(num, 1);
+                    doubleIntegerHashMap.put(num, 1);
                 }
             }
             double max = -99999;
             double res = 9;
-            for (HashMap.Entry<Double, Integer> entry : map.entrySet()) {
+            for (HashMap.Entry<Double, Integer> entry : doubleIntegerHashMap.entrySet()) {
                 if (max < entry.getValue()) {
                     max = entry.getValue();
                     res = entry.getKey();
@@ -147,6 +151,15 @@ public class DecisionTree implements MLBase {
             allFeat.add(train_X.getQuick(j, maxIndex));
         }
         System.out.println(allFeat);
+        if (!map.isEmpty()) {
+            System.out.println(maxIndex);
+            System.out.println((double) map.get(maxIndex));
+            node.edgeVal = new Pair<>(selValue, (double) map.get(maxIndex));
+        }
+        for (int i = maxIndex; i < map.size(); i++) {
+            map.replace(i, map.get(i + 1));
+        }            // pair: Integer 存储树的边值（特征选取的值），Double 存储节点的值（哪一列特征）
+        map.remove(map.size() - 1);
         for (double x : allFeat) {
             // x 对于每一个选取特征中可以取的值，找到哪些行传入list中
             List<Integer> list = new ArrayList<>();
@@ -179,11 +192,9 @@ public class DecisionTree implements MLBase {
             }
             System.out.println("train_x" + Arrays.deepToString(train_x));
             System.out.println("train_y" + Arrays.deepToString(train_y));
-
-            // pair: Integer 存储树的边值（特征选取的值），Double 存储节点的值（哪一列特征）
-            node.edgeVal = new Pair<>(selValue, (double) maxIndex);
 //                Pair<Integer, Double> pair = new Pair<>(selValue, -1.0);
-            node.sonNode.add(createTree(new DenseDoubleMatrix2D(train_x), new DenseDoubleMatrix2D(train_y), (int) x, deep + 1));
+            // TODO 大坑呀QAQ , 递归传递的如果是map等引用类型，一定考虑是否逻辑上是拷贝
+            node.sonNode.add(createTree(new DenseDoubleMatrix2D(train_x), new DenseDoubleMatrix2D(train_y), (int) x, deep + 1, new HashMap<>(map)));
         }
         return node;
     }
@@ -199,9 +210,6 @@ public class DecisionTree implements MLBase {
                 } else {
                     return getValforTree(son, oneRow);
                 }
-            }
-            if (son.getSelfId() != -1) {
-                return son.getSelfId();
             }
         }
         return -1;
