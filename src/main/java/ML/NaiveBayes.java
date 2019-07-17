@@ -1,6 +1,5 @@
 package ML;
 
-import core.MLBase;
 import matrix.DoubleMatrix2D;
 
 import java.util.ArrayList;
@@ -15,24 +14,12 @@ import java.util.HashMap;
  *
  * @author ttp
  */
-public class NaiveBayes implements MLBase {
-    private DoubleMatrix2D _fit_X;
-    private DoubleMatrix2D _y;
+public class NaiveBayes extends AbstractMLBase {
     private double e;
 
     public NaiveBayes(double e) {
         // 误差e, 在判断特征时，允许处于一定范围内
         this.e = e;
-    }
-
-    @Override
-    public MLBase fit(DoubleMatrix2D trainX, DoubleMatrix2D trainY) throws Exception {
-        if (trainX.rows() != trainY.columns()) {
-            throw new Exception("Warning! your (trainX.rows())" + trainX.rows() + "!= (testY.columns())" + trainY.columns());
-        }
-        this._fit_X = trainX;
-        this._y = trainY;
-        return this;
     }
 
     @Override
@@ -119,22 +106,5 @@ public class NaiveBayes implements MLBase {
             res += Math.log((double) equNum / (double) allNum);
         }
         return res;
-    }
-
-    @Override
-    public double score(DoubleMatrix2D testX, DoubleMatrix2D testY) throws Exception {
-        double[] res = this.predict(testX);
-        if (res.length != testY.columns()) {
-            throw new Exception("Warning! your (res.length)" + res.length + "!= (testY.columns())" + testY.columns());
-        }
-        int isOk = 0;
-        for (int i = 0; i < res.length; i++) {
-            if (res[i] == testY.getQuick(0, i)) {
-                isOk++;
-            }
-        }
-        System.out.println(isOk);
-        System.out.println(res.length);
-        return (double) isOk / (double) res.length;
     }
 }

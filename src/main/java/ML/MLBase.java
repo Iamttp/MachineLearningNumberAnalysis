@@ -1,4 +1,4 @@
-package core;
+package ML;
 
 import matrix.DoubleMatrix2D;
 

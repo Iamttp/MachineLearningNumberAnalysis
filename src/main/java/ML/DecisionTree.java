@@ -1,6 +1,5 @@
 package ML;
 
-import core.MLBase;
 import core.TreeNode;
 import javafx.util.Pair;
 import matrix.DoubleMatrix2D;
@@ -13,13 +12,9 @@ import java.util.List;
  * 决策树（decision tree）
  * ID3算法， 不能用于连续数据
  */
-public class DecisionTree implements MLBase {
-    private DoubleMatrix2D _fit_X;
-    private DoubleMatrix2D _y;
+public class DecisionTree extends AbstractMLBase {
+    public TreeNode<Pair<Integer, Double>> res;
 
-    /**
-     * pair: Integer 存储树的边值（特征选取的值），Double 存储节点的值（哪一列特征）
-     */
     @Override
     public MLBase fit(DoubleMatrix2D trainX, DoubleMatrix2D trainY) throws Exception {
         if (trainX.rows() != trainY.columns()) {
@@ -27,18 +22,20 @@ public class DecisionTree implements MLBase {
         }
         this._fit_X = trainX;
         this._y = trainY;
+
+        // 在fit时即构建树
+        Map<Integer, Integer> mapForIndex = new HashMap<>();
+        for (int i = 0; i < this._fit_X.columns(); i++) {
+            mapForIndex.put(i, i);
+        }
+        res = createTree(this._fit_X, this._y, -1, 0, mapForIndex);
+        System.out.println(res);
+
         return this;
     }
 
     @Override
     public double[] predict(DoubleMatrix2D testX) {
-        Map<Integer, Integer> mapForIndex = new HashMap<>();
-        for (int i = 0; i < this._fit_X.columns(); i++) {
-            mapForIndex.put(i, i);
-        }
-        TreeNode<Pair<Integer, Double>> res = createTree(this._fit_X, this._y, -1, 0, mapForIndex);
-        System.out.println(res);
-
         double[] retRes = new double[testX.rows()];
         for (int i = 0; i < testX.rows(); i++) {
             double[] oneRow = testX.getOneRow(i);
@@ -150,10 +147,8 @@ public class DecisionTree implements MLBase {
         for (int j = 0; j < train_X.rows(); j++) {
             allFeat.add(train_X.getQuick(j, maxIndex));
         }
-        System.out.println(allFeat);
+//        System.out.println(allFeat);
         if (!map.isEmpty()) {
-            System.out.println(maxIndex);
-            System.out.println((double) map.get(maxIndex));
             node.edgeVal = new Pair<>(selValue, (double) map.get(maxIndex));
         }
         for (int i = maxIndex; i < map.size(); i++) {
@@ -190,10 +185,10 @@ public class DecisionTree implements MLBase {
             for (int i = 0; i < list.size(); i++) {
                 train_y[0][i] = y.getQuick(0, list.get(i));
             }
-            System.out.println("train_x" + Arrays.deepToString(train_x));
-            System.out.println("train_y" + Arrays.deepToString(train_y));
+//            System.out.println("train_x" + Arrays.deepToString(train_x));
+//            System.out.println("train_y" + Arrays.deepToString(train_y));
 //                Pair<Integer, Double> pair = new Pair<>(selValue, -1.0);
-            // TODO 大坑呀QAQ , 递归传递的如果是map等引用类型，一定考虑是否逻辑上是拷贝
+            // 大坑呀QAQ , 递归传递的如果是map等引用类型，一定考虑是否逻辑上是拷贝
             node.sonNode.add(createTree(new DenseDoubleMatrix2D(train_x), new DenseDoubleMatrix2D(train_y), (int) x, deep + 1, new HashMap<>(map)));
         }
         return node;
@@ -213,10 +208,5 @@ public class DecisionTree implements MLBase {
             }
         }
         return -1;
-    }
-
-    @Override
-    public double score(DoubleMatrix2D testX, DoubleMatrix2D testY) throws Exception {
-        return 0;
     }
 }
