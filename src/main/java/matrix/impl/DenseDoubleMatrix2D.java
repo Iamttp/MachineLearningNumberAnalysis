@@ -55,4 +55,24 @@ public class DenseDoubleMatrix2D extends DoubleMatrix2D {
         }
         return res;
     }
+
+    @Override
+    public void setOneCol(double[] oneCol, int col) {
+        if (oneCol.length != this.rows) {
+            throw new IllegalArgumentException("Must have same number of : oneCol.length=" + oneCol.length + "this.rows=" + this.rows);
+        }
+        for (int i = 0; i < this.rows; i++) {
+            this.setQuick(i, col, oneCol[i]);
+        }
+    }
+
+    @Override
+    public void setOneRow(double[] oneRow, int row) {
+        if (oneRow.length != this.columns) {
+            throw new IllegalArgumentException("Must have same number of : oneRow.length=" + oneRow.length + "this.columns=" + this.columns);
+        }
+        for (int i = 0; i < this.rows; i++) {
+            this.setQuick(row, i, oneRow[i]);
+        }
+    }
 }

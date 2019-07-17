@@ -22,6 +22,7 @@ public class DecisionTree extends AbstractMLBase {
         if (trainX.rows() != trainY.columns()) {
             throw new Exception("Warning! your (trainX.rows())" + trainX.rows() + "!= (testY.columns())" + trainY.columns());
         }
+        // TODO 去重
         this._fit_X = trainX;
         this._y = trainY;
 
@@ -131,7 +132,7 @@ public class DecisionTree extends AbstractMLBase {
             }
             resUp.add(entD - sum);
         }
-        // TODO 3. 根据最大信息增益，选为划分属性, 需要建一颗树
+        // 3. 根据最大信息增益，选为划分属性, 需要建一颗树 TODO 未处理null
         System.out.println("信息增益:\t" + resUp);
         int maxIndex = 0;
         double max = -99999.0;

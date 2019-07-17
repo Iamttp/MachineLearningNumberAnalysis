@@ -94,4 +94,8 @@ public abstract class DoubleMatrix2D extends AbstractMatrix2D {
     public abstract double[] getOneCol(int row);
 
     public abstract double[] getOneRow(int col);
+
+    public abstract void setOneCol(double[] oneCol, int col);
+
+    public abstract void setOneRow(double[] oneRow, int row);
 }
