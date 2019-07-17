@@ -71,7 +71,7 @@ public class DenseDoubleMatrix2D extends DoubleMatrix2D {
         if (oneRow.length != this.columns) {
             throw new IllegalArgumentException("Must have same number of : oneRow.length=" + oneRow.length + "this.columns=" + this.columns);
         }
-        for (int i = 0; i < this.rows; i++) {
+        for (int i = 0; i < this.columns; i++) {
             this.setQuick(row, i, oneRow[i]);
         }
     }
