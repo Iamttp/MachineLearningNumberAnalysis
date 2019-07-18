@@ -65,8 +65,6 @@ public class TreeNode<T> {
 
     @Override
     public String toString() {
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("\n");
         return iteratorTree(this);
     }
 

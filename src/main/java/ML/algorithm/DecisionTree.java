@@ -1,7 +1,6 @@
 package ML.algorithm;
 
 import ML.AbstractMLBase;
-import ML.MLBase;
 import core.TreeNode;
 import javafx.util.Pair;
 import matrix.DoubleMatrix2D;
@@ -18,7 +17,7 @@ public class DecisionTree extends AbstractMLBase {
     public TreeNode<Pair<Integer, Double>> res;
 
     @Override
-    public MLBase fit(DoubleMatrix2D trainX, DoubleMatrix2D trainY) throws Exception {
+    public AbstractMLBase fit(DoubleMatrix2D trainX, DoubleMatrix2D trainY) throws Exception {
         if (trainX.rows() != trainY.columns()) {
             throw new Exception("Warning! your (trainX.rows())" + trainX.rows() + "!= (testY.columns())" + trainY.columns());
         }
@@ -32,7 +31,7 @@ public class DecisionTree extends AbstractMLBase {
             mapForIndex.put(i, i);
         }
         res = createTree(this._fit_X, this._y, -1, 0, mapForIndex);
-        System.out.println(res);
+        System.out.println("创建树：\n" + res);
 
         return this;
     }
@@ -45,7 +44,7 @@ public class DecisionTree extends AbstractMLBase {
             // TODO 树记录分类条件
             retRes[i] = getValforTree(res, oneRow);
         }
-        System.out.println(Arrays.toString(retRes));
+        System.out.println("预测结果：\n" + Arrays.toString(retRes));
         return retRes;
     }
 
@@ -133,7 +132,7 @@ public class DecisionTree extends AbstractMLBase {
             resUp.add(entD - sum);
         }
         // 3. 根据最大信息增益，选为划分属性, 需要建一颗树 TODO 未处理null
-        System.out.println("信息增益:\t" + resUp);
+//        System.out.println("信息增益:\t" + resUp);
         int maxIndex = 0;
         double max = -99999.0;
         for (int i = 0; i < resUp.size(); i++) {
@@ -197,6 +196,9 @@ public class DecisionTree extends AbstractMLBase {
         return node;
     }
 
+    /**
+     * 用于根据决策树，对传入的oneRow进行预测
+     */
     private double getValforTree(TreeNode<Pair<Integer, Double>> res, double[] oneRow) {
         double index = res.edgeVal.getValue();
         double x = oneRow[(int) index];

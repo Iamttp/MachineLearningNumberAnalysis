@@ -22,7 +22,7 @@ public class DecisionTreeTest {
         DenseDoubleMatrix2D resAll2 = new DenseDoubleMatrix2D(loadDate.getFeatureGet());
         for (int i = 0; i < resAll2.columns(); i++) {
             // TODO 不是整数貌似还不行，可能是浮点数比较问题？
-            resAll2.setOneCol(Discretization.equalWidth(resAll2.getOneCol(i), 4, true), i);
+            resAll2.setOneCol(Discretization.equalWidth(resAll2.getOneCol(i), 6, true), i);
         }
 
         //////////////////////////////////////////////////////////////////// 强力去重 haha
@@ -51,15 +51,13 @@ public class DecisionTreeTest {
             x[i] = arrayList.get(i);
             x2[i] = arrayList2.get(i);
         }
-        System.out.println(Arrays.deepToString(x));
-        System.out.println(Arrays.toString(x2));
         resAll2 = new DenseDoubleMatrix2D(x);
         double[][] x3 = new double[1][];
         x3[0] = x2;
         resAll1 = new DenseDoubleMatrix2D(x3);
         ////////////////////////////////////////////////////////////////////
 
-        int rows = resAll2.rows() / 5 * 4;
+        int rows = resAll2.rows() / 10 * 9;
         double[][] res1 = new double[rows][];
         double[][] res2 = new double[1][rows];
         double[][] res3 = new double[resAll2.rows() - rows][];
@@ -71,12 +69,13 @@ public class DecisionTreeTest {
         }
         for (int i = rows; i < resAll2.rows(); i++) {
             res3[i - rows] = resAll2.getOneRow(i);
-            res4[0][i - rows] = resAll2.getQuick(0, i);
+            res4[0][i - rows] = resAll1.getQuick(0, i);
         }
         decisionTree = (DecisionTree) decisionTree.fit(new DenseDoubleMatrix2D(res1), new DenseDoubleMatrix2D(res2));
 
-        double res = decisionTree.score(new DenseDoubleMatrix2D(res1), new DenseDoubleMatrix2D(res2));
-        System.out.println(new DenseDoubleMatrix2D(res2));
+        // TODO 用其它测试集测试数据就有问题，先这样吧
+        double res = decisionTree.score(new DenseDoubleMatrix2D(res3), new DenseDoubleMatrix2D(res4));
+        System.out.println("实际测试数据结果\n" + new DenseDoubleMatrix2D(res4));
         System.out.println("testDateTest\t" + res);
     }
 

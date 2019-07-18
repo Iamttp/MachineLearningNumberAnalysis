@@ -15,11 +15,11 @@ public class LoadDate {
     private boolean flag;
 
     public double[][] getFeatureGet() {
-        return featureGet;
+        return featureGet.clone();
     }
 
     public double[][] getResGet() {
-        return resGet;
+        return resGet.clone();
     }
 
     public LoadDate(String path) throws Exception {

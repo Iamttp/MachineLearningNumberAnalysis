@@ -3,14 +3,15 @@ package ML;
 import matrix.DoubleMatrix2D;
 
 /**
+ * 通用的机器学习算法接口，参考于sk-learn
+ *
  * @author ttp
  */
-public abstract class AbstractMLBase implements MLBase {
+public abstract class AbstractMLBase {
     protected DoubleMatrix2D _fit_X;
     protected DoubleMatrix2D _y;
 
-    @Override
-    public MLBase fit(DoubleMatrix2D trainX, DoubleMatrix2D trainY) throws Exception {
+    public AbstractMLBase fit(DoubleMatrix2D trainX, DoubleMatrix2D trainY) throws Exception {
         if (trainX.rows() != trainY.columns()) {
             throw new Exception("Warning! your (trainX.rows())" + trainX.rows() + "!= (testY.columns())" + trainY.columns());
         }
@@ -19,7 +20,6 @@ public abstract class AbstractMLBase implements MLBase {
         return this;
     }
 
-    @Override
     public double score(DoubleMatrix2D testX, DoubleMatrix2D testY) throws Exception {
         double[] res = this.predict(testX);
         if (res.length != testY.columns()) {
@@ -35,4 +35,8 @@ public abstract class AbstractMLBase implements MLBase {
         System.out.println(res.length);
         return (double) isOk / (double) res.length;
     }
+
+    //    get_params();
+    //    set_params();
+    public abstract double[] predict(DoubleMatrix2D testX);
 }

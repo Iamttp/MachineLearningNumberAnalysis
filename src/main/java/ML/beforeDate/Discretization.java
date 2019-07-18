@@ -5,14 +5,9 @@ import java.util.LinkedHashSet;
 import java.util.List;
 
 public class Discretization {
-    public static void removeDuplicate(List<Double> list) {
-        LinkedHashSet<Double> set = new LinkedHashSet<>(list.size());
-        set.addAll(list);
-        list.clear();
-        list.addAll(set);
-    }
-
-
+    /**
+     * 对数据进行等宽离散化
+     */
     public static double[] equalWidth(double[] inData, int n, boolean isInt) {
         Arrays.sort(inData);
         double minData = inData[0];
